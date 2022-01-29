@@ -6,7 +6,7 @@ import OrderListItem from './orderListItem';
 import {OrdersContext} from './ordersContext';
 
 const OrdersListScreen = ({navigation}) => {
-  let {orders, loading} = useContext(OrdersContext);
+  let {orders, loading, refreshOrders} = useContext(OrdersContext);
 
   return (
     <>
@@ -23,6 +23,8 @@ const OrdersListScreen = ({navigation}) => {
           orders.length > 0 && (
             <FlatList
               data={orders}
+              onRefresh={() => refreshOrders()}
+              refreshing={loading}
               keyExtractor={order => order.id}
               renderItem={({item}) => (
                 <OrderListItem order={item} navigation={navigation} />

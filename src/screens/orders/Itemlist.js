@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import Icons from '../../components/text/icons';
 import {H3, P} from '../../components/text/text';
 import colors from '../../styles/variables/colors';
+import {OrdersContext} from './ordersContext';
 
 const Itemlist = ({
   items,
@@ -12,10 +13,14 @@ const Itemlist = ({
   setSelected,
   onPress,
 }) => {
+  let {refreshOrders, loading} = useContext(OrdersContext);
+
   return (
     <>
       <FlatList
         data={items}
+        onRefresh={() => refreshOrders()}
+        refreshing={loading}
         renderItem={({item}) => (
           <TouchableOpacity
             style={Styles.item}
@@ -43,7 +48,7 @@ const Itemlist = ({
                     `Size: ${item.item_details.size} | `}
                   Qty: {item.quantity} | {item.status}
                 </P>
-                <P>Kes 1,200</P>
+                <P>Kes {item.price}</P>
               </View>
             </View>
           </TouchableOpacity>

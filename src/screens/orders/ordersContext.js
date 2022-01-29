@@ -24,6 +24,18 @@ const useOrdersProvider = () => {
     }
   };
 
+  const refreshOrders = () => {
+    setLoading(true);
+    Api.orders
+      .get()
+      .then(res => {
+        setOrders(res.data);
+        saveData(res.data);
+        setLoading(false);
+      })
+      .catch(e => console.log(e));
+  };
+
   const getter = id => {
     orders.forEach(item => {
       if (item.id === id) {
@@ -50,5 +62,5 @@ const useOrdersProvider = () => {
     getOrders();
   }, []);
 
-  return {loading, orders, getter, order};
+  return {loading, orders, getter, order, refreshOrders};
 };
