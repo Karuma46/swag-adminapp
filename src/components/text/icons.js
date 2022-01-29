@@ -7,7 +7,7 @@ const Icons = props => {
   return (
     <Icon
       name={props.name}
-      size={22}
+      size={props.size ? props.size : 22}
       style={{...styles.icons, ...props.style}}
       onPress={props.onPress}
     />

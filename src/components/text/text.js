@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   H3: {
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Montserrat-Bold',
     fontSize: 16,
     color: colors.black,
   },
