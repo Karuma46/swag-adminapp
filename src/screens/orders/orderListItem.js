@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Pressable} from 'react-native';
 import colors from '../../styles/variables/colors';
 import {H3, P} from '../../components/text/text';
+import getDate from '../../utils/dates';
 
 const OrderListItem = ({order, navigation}) => {
   return (
@@ -15,7 +16,7 @@ const OrderListItem = ({order, navigation}) => {
       <View style={styles.orderDetails}>
         <View style={styles.orderTitle}>
           <H3>{order.orderNumber}</H3>
-          <P>14:09</P>
+          <P>{getDate(order.date_created)}</P>
         </View>
         <View style={styles.orderItems}>
           {order.items.length > 0 &&
@@ -46,7 +47,6 @@ const styles = StyleSheet.create({
   orderAvatar: {
     width: '20%',
     display: 'flex',
-    // justifyContent: 'center',
     flexDirection: 'row',
   },
   orderDetails: {
