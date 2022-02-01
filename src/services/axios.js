@@ -6,7 +6,7 @@ class Call {
   baseUrl = Config.API_URL;
 
   constructor(endpoint) {
-    this.endpoint = `http://192.168.0.12:8000/${endpoint}`;
+    this.endpoint = `${this.baseUrl}${endpoint}`;
   }
 
   getHeaders = async () => {
