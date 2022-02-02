@@ -1,4 +1,5 @@
 import React, {createContext, useState, useEffect} from 'react';
+import NetInfo from '@react-native-community/netinfo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Api from './api';
 
@@ -12,7 +13,9 @@ export const AuthProvider = ({children}) => {
 const useAuthProvider = () => {
   const [user, setUser] = useState({});
   const [isAuth, setIsAuth] = useState(false);
+  const [authToken, setAuthToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isOnline, setIsOnline] = useState(false);
 
   const setAuth = async token => {
     try {
@@ -23,6 +26,16 @@ const useAuthProvider = () => {
       return false;
     }
     return true;
+  };
+
+  const getAuth = async () => {
+    try {
+      await AsyncStorage.getItem('authtoken').then(res => {
+        setAuthToken(res);
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const signOut = () => {
@@ -43,20 +56,33 @@ const useAuthProvider = () => {
   };
 
   useEffect(() => {
-    Api.isauth
-      .get()
-      .then(res => {
-        setUser(res.data);
-        setIsAuth(true);
-        setIsLoading(false);
-        console.log('Called!');
-      })
-      .catch(error => {
-        console.log(error);
-        unsetAuth();
-        setIsLoading(null);
-      });
-  }, [isAuth]);
+    getAuth();
+    NetInfo.addEventListener(state => {
+      setIsOnline(state.isInternetReachable);
+    });
 
-  return {user, isAuth, setAuth, signOut, isLoading};
+    if (isOnline) {
+      Api.isauth
+        .get()
+        .then(res => {
+          setUser(res.data);
+          setIsAuth(true);
+          setIsLoading(false);
+          console.log('Called!');
+        })
+        .catch(error => {
+          console.log(error);
+          unsetAuth();
+          setIsLoading(null);
+        });
+    } else {
+      if (authToken !== null) {
+        setIsAuth(true);
+      }
+      setIsLoading(false);
+      console.log(authToken, isOnline);
+    }
+  }, [isAuth, isOnline, authToken]);
+
+  return {user, isAuth, setAuth, signOut, isLoading, isOnline};
 };

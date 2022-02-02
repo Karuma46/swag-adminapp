@@ -14,7 +14,7 @@ const Splash = ({navigation}) => {
       <View style={styles.logoArea}>
         <Logo style={styles.logo} />
       </View>
-      {!isLoading ? <AuthButtons navigation={navigation} /> : <></>}
+      {isLoading ? <></> : <AuthButtons navigation={navigation} />}
     </View>
   );
 };
