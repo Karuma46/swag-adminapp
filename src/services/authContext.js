@@ -79,8 +79,6 @@ const useAuthProvider = () => {
       if (authToken !== null) {
         setIsAuth(true);
       }
-      setIsLoading(false);
-      console.log(authToken, isOnline);
     }
   }, [isAuth, isOnline, authToken]);
 
